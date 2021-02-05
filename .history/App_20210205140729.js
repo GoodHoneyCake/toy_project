@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 const STORAGE_KEY = "@save_name";
 
 class App extends React.Component {
@@ -35,6 +34,7 @@ class App extends React.Component {
   save = async (name) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, name);
+      alert("오늘에 집중♥");
       this.setState({ name });
     } catch (e) {
       alert("Failed to save name.");
@@ -44,9 +44,9 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
+      alert("초기화♥");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("Failed to clear the async storage.");
     }
   };
 
@@ -69,7 +69,7 @@ class App extends React.Component {
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="오늘에 집중"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#00ADCF",
   },
   input: {
     padding: 15,
@@ -104,8 +104,7 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#fc5f5f",
+    backgroundColor: "#FF851B",
   },
   buttonText: {
     fontSize: 14,

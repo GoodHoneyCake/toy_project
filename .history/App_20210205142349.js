@@ -35,6 +35,7 @@ class App extends React.Component {
   save = async (name) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, name);
+      alert("오늘에 집중");
       this.setState({ name });
     } catch (e) {
       alert("Failed to save name.");
@@ -44,9 +45,9 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
+      alert("초기화");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("Failed to clear the async storage.");
     }
   };
 
@@ -62,6 +63,16 @@ class App extends React.Component {
     this.setState({ text: "" });
   };
 
+  componentDidMount() {
+    // After component mounted
+    this._getCoinData(10);
+
+    // setInterval(() => {
+    //   this._getCoinData(10);
+    //   console.log('toggled!');
+    // }, 10000);
+  }
+
   render() {
     const { text, name } = this.state;
     return (
@@ -69,11 +80,19 @@ class App extends React.Component {
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="오늘에 집중"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
-        <Text style={styles.text}>{name}</Text>
+        <FlatList
+          data={this.state.coinData}
+          keyExtractor={(item) => item.name}
+          renderItem={this._renderItem}
+          refreshing={this.state.isLoading}
+          onRefresh={this._getCoinData}
+        >
+          <Text style={styles.text}>{name}</Text>
+        </FlatList>
         <TouchableOpacity onPress={this.removeEverything} style={styles.button}>
           <Text style={styles.buttonText}>초기화</Text>
         </TouchableOpacity>
@@ -104,7 +123,6 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     padding: 10,
-    borderRadius: 10,
     backgroundColor: "#fc5f5f",
   },
   buttonText: {

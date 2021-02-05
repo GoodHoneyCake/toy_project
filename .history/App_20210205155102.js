@@ -44,9 +44,9 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
+      alert("초기화 완료 ♥️");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("한줄평은 초기화 누르지 않고 재작성 가능 ♥️");
     }
   };
 
@@ -69,11 +69,11 @@ class App extends React.Component {
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="메모"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>잊지 말고 꼭 {name} 하기</Text>
         <TouchableOpacity onPress={this.removeEverything} style={styles.button}>
           <Text style={styles.buttonText}>초기화</Text>
         </TouchableOpacity>

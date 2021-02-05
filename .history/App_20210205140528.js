@@ -5,12 +5,28 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 const STORAGE_KEY = "@save_name";
 
-class App extends React.Component {
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
+const App = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   state = {
     text: "",
     name: "",
@@ -35,6 +51,7 @@ class App extends React.Component {
   save = async (name) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, name);
+      alert("오늘에 집중♥");
       this.setState({ name });
     } catch (e) {
       alert("Failed to save name.");
@@ -44,9 +61,9 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
+      alert("초기화♥");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("Failed to clear the async storage.");
     }
   };
 
@@ -65,11 +82,12 @@ class App extends React.Component {
   render() {
     const { text, name } = this.state;
     return (
+      <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="오늘에 집중"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
@@ -78,6 +96,15 @@ class App extends React.Component {
           <Text style={styles.buttonText}>초기화</Text>
         </TouchableOpacity>
       </View>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Text>Pull down to see RefreshControl indicator</Text>
+      </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -92,7 +119,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#00ADCF",
   },
   input: {
     padding: 15,
@@ -104,12 +131,21 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#fc5f5f",
+    backgroundColor: "#FF851B",
   },
   buttonText: {
     fontSize: 14,
     color: "#fff",
+  },
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: "pink",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

@@ -69,7 +69,7 @@ class App extends React.Component {
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="메모"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />

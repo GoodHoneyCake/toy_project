@@ -44,9 +44,8 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("Failed to clear the async storage.");
     }
   };
 
@@ -66,10 +65,11 @@ class App extends React.Component {
     const { text, name } = this.state;
     return (
       <View style={styles.container}>
+        <Text>{state.date}</Text>
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="오늘에 집중"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
   button: {
     margin: 10,
     padding: 10,
-    borderRadius: 10,
     backgroundColor: "#fc5f5f",
   },
   buttonText: {

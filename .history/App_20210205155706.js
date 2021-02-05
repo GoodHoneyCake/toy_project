@@ -44,9 +44,9 @@ class App extends React.Component {
   removeEverything = async () => {
     try {
       await AsyncStorage.clear();
-      alert("데이터 초기화 ♥️");
+      alert("저장된 메모 초기화 완료 ♥️");
     } catch (e) {
-      alert("메모는 새로 작성하면 덮어 쓰여요 ♥️");
+      alert("이전 메모는 재작성하면 지워집니다 ♥️");
     }
   };
 
@@ -69,7 +69,7 @@ class App extends React.Component {
         <TextInput
           style={styles.input}
           value={text}
-          placeholder="오늘의 한 줄"
+          placeholder="메모"
           onChangeText={this.onChangeText}
           onSubmitEditing={this.onSubmitEditing}
         />
