@@ -1,2 +1,2 @@
-# toy-project
-toy-project (react-native)
+# toy_project
+toy_project (react native)
